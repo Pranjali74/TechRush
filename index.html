@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Stock Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tracker">
+    <h1 style="text-align: center;">📈 Stock Tracker</h1>
+    <form action="">
+      <input type="search" id="symbol" style="width: 60%;text-align: center;line-height: 60%;padding: 10px;" placeholder="Search here...">
+      <i class="fa fa-search"></i>
+    </form>
+    <button style="text-align: center;" style="padding: 20px;"  onclick="getStockData()">Track</button>
+    <div class="result" id="result">
+      <!-- Stock data will appear here -->
+    </div>
+  
+  <div class="login">
+    <h1 style="text-align: center;">Login To Your Account</h1>
+    <div action="">
+  <div>
+<br>
+<p> <a href="signin.html">Log In</a></p><br>
+<p><a href="signup.html">Sign Up</a></p>
+</div>
+</div>
+</div>
+  <style>
+  body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.tracker {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 800px;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 65px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  border: none;
+  border-radius: 65px;
+  cursor: pointer;
+}
+button.pill {
+  border-radius: 20px;
+  padding: 8px 20px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 16px;
+}
+canvas#priceChart {
+  width: 100% !important;
+  max-width: 100%;
+  height: 300px !important;
+  margin-top: 20px;
+}
+
+</style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

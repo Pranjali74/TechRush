@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="signup-container">
+        <form id="signup-form">
+            <h2>Create Your Account</h2>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@example.com" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" name="password" placeholder="********" required>
+            </div>
+            <button type="submit" class="signup-button">Sign Up</button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+    <p class="login-link">Already have an account? <br><a href="signin.html">Log In</a></p>
+    </div>
+    <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.tracker {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 300px;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 65px;
+}
+
+    button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  border: none;
+  border-radius: 65px;
+  cursor: pointer;
+}
+button.pill {
+  border-radius: 20px;
+  padding: 8px 20px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 16px;
+}
+.login-link {
+    margin-top: 20px; /* Space above the link */
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #555; /* A subtle gray color for the text */
+}
+
+/* Styles for the "Log In" link */
+.login-link a {
+    color: #34a43b; /* A standard blue color for the link text */
+    text-decoration: none; /* Remove the default underline */
+    font-weight: bold; /* Make the link text bold */
+}
+
+/* Hover effect for the link */
+.login-link a:hover {
+    text-decoration: underline; /* Add underline on hover for interaction feedback */
+}
+</style>
+</body>
+</html>
