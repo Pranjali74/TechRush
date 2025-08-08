@@ -1,0 +1,58 @@
+body {
+  font-family: Arial, sans-serif;
+  background: rgb(169, 205, 247);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.tracker {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 300px;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 65px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  border: none;
+  border-radius: 65px;
+  cursor: pointer;
+}
+button.pill {
+  border-radius: 20px;
+  padding: 8px 20px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 16px;
+}
+canvas#priceChart {
+  width: 100% !important;
+  max-width: 100%;
+  height: 300px !important;
+  margin-top: 20px;
+}
+
+
+
