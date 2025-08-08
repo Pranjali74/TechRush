@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Stock Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tracker">
+    <h1 style="text-align: center;">📈 Stock Tracker</h1>
+
+    <!-- 🔧 Wrapped input & button in a flex container -->
+    <div class="search-bar">
+      <input type="search" id="symbol" placeholder="Search here...">
+      <button onclick="getStockData()">Track</button>
+    </div>
+    <div class="result" id="result">
+      <!-- Stock data will appear here -->
+    </div>
+    <div class="login">
+    <h1 style="text-align: center;">Login To Your Account</h1>
+    <div action="">
+  <div>
+    <br>
+      <p> <a href="sign_in.html">Log In</a></p><br>
+<p><a href="signup.html">Sign Up</a></p>
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+<style>
+  body {
+  font-family: Arial, sans-serif;
+  background: #67a6e5;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.tracker {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 600px; /* Increased width */
+}
+
+/* 🔧 FLEX container to align input & button */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search-bar input {
+  flex: 1; /* Take up available space */
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 50px 0 0 50px;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 12px 25px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0 50px 50px 0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.search-bar button:hover {
+  background: #0056b3;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+
+</style>
+</html>
