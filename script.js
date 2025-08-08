@@ -1,14 +1,15 @@
-// script.js
-
-const API_KEY = "d29lr91r01qvhsftvf50d29lr91r01qvhsftvf5g";
+const API_KEY = "d2aa2v1r01qoad6oq920d2aa2v1r01qoad6oq92g";  // Replace with your real Finnhub API key
 let stockChart = null;
 let refreshTimer = null;
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // in ms
 
-async function getStockData() {
+async function getStockData(retries = 0) {
   const symbol = document.getElementById("symbol").value.trim().toUpperCase();
   const resultDiv = document.getElementById("result");
+
   if (!symbol) {
-    resultDiv.innerHTML = "⚠️ Please enter a stock symbol.";
+    resultDiv.innerHTML = "⚠ Please enter a stock symbol.";
     return;
   }
 
@@ -18,29 +19,39 @@ async function getStockData() {
     const url = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`;
     const resp = await fetch(url);
     const data = await resp.json();
-    // data.c = current price, data.dp = percent change
-    if (data.c === 0 && data.o === 0 && data.pc === 0) {
-      resultDiv.innerHTML = "❌ Invalid symbol or no data.";
-      return;
+
+    const { c, dp, h, l } = data;
+
+    // Retry if all values are zero (transient or invalid)
+    if (c === 0 && dp === 0 && h === 0 && l === 0) {
+      if (retries < MAX_RETRIES) {
+        setTimeout(() => getStockData(retries + 1), RETRY_DELAY * (retries + 1));
+        return;
+      } else {
+        resultDiv.innerHTML = "⚠ Data temporarily unavailable. Please try again later.";
+        return;
+      }
     }
 
     const now = new Date().toLocaleTimeString();
-    const price = parseFloat(data.c).toFixed(2);
-    const pct  = parseFloat(data.dp).toFixed(2);
+    const [price, pct, high, low] = [parseFloat(c), parseFloat(dp), parseFloat(h), parseFloat(l)];
 
-    // show latest
+    if ([price, pct, high, low].some(v => isNaN(v))) {
+      resultDiv.innerHTML = "❌ Invalid symbol or missing data.";
+      return;
+    }
+
     resultDiv.innerHTML = `
-      ✅ <strong>${symbol}</strong><br>
-      💰 Price: ${price.toFixed(2)}<br>
-      📈 Change: ${pct.toFixed(2)}%<br>
-      📊 High: ${high.toFixed(2)}<br>
-      📉 Low: ${low.toFixed(2)}<br>
-      📦 Volume: ${formatVolume(volume)}<br>
-      🕒 ${now}
-    `;
+      <strong>${symbol}</strong><br>
+      PRICE: $${price.toFixed(2)}<br>
+      CHANGE: ${pct.toFixed(2)}%<br>
+      HIGH: $${high.toFixed(2)}<br>
+      LOW: $${low.toFixed(2)}<br>
+      ${now}
+    `;
 
-    // update chart
     updateChart(symbol, now, price);
+
   } catch (err) {
     console.error(err);
     resultDiv.innerHTML = "❌ Error fetching data.";
@@ -48,7 +59,6 @@ async function getStockData() {
 }
 
 function updateChart(symbol, label, price) {
-  // lazy-create canvas if needed
   let canvas = document.getElementById("priceChart");
   if (!canvas) {
     canvas = document.createElement("canvas");
@@ -59,87 +69,40 @@ function updateChart(symbol, label, price) {
   }
   const ctx = canvas.getContext("2d");
 
-  if (!stockChart) {
-    stockChart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: [label],
-        datasets: [{
-          label: `${symbol} Price`,
-          data: [price],
-          fill: true,
-          tension: 0.4,
-          borderColor: "#10b981",
-          backgroundColor: "rgba(16,185,129,0.2)"
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: { display: true },
-          y: {
-            beginAtZero: false,
-            ticks: {
-              callback: v => `$${v}`
-            }
-          }
-        }
-      }
-    });
-  } else {
-    stockChart.data.labels.push(label);
-    stockChart.data.datasets[0].data.push(price);
-    stockChart.update();
-  }
+ if (!stockChart) {
+  stockChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [label],
+      datasets: [{
+        label: `${symbol} Price`,  // Initial label
+        data: [price],
+        fill: true,
+        tension: 0.4,
+        borderColor: "#10b981",
+        backgroundColor: "rgba(16,185,129,0.2)"
+      }]
+    },
+    options: { /* ... */ }
+  });
+} else {
+  //  Update dataset label with new symbol
+  stockChart.data.datasets[0].label = `${symbol} Price`;
+
+  //  Add new data point
+  stockChart.data.labels.push(label);
+  stockChart.data.datasets[0].data.push(price);
+
+  //  Refresh the chart
+  stockChart.update();
+}
+
 }
 
 function startTracking() {
-  // clear old timer
   if (refreshTimer) clearInterval(refreshTimer);
-
-  // fetch immediately, then every 60s
   getStockData();
-  refreshTimer = setInterval(getStockData, 60_000);
+  refreshTimer = setInterval(getStockData, 60000); // refresh every 60 seconds
 }
 
-// wire up your "Track" button
 document.querySelector("button").addEventListener("click", startTracking);
-
-function handleCredentialResponse(response) {
-    // The response.credential is the ID token (a JWT)
-    const id_token = response.credential;
-    console.log("Encoded JWT ID Token: " + id_token);
-
-    // After getting the token, you must send it to your server for verification.
-    // This is the most critical security step.
-    sendTokenToServer(id_token);
-}
-async function sendTokenToServer(token) {
-    try {
-        // Replace with the actual URL of your server's login endpoint
-        const serverUrl = 'https://your-backend-url.com/auth/google'; 
-        
-        const response = await fetch(serverUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id_token: token }),
-        });
-
-        const data = await response.json();
-        
-        if (response.ok) {
-            console.log('Login successful!', data);
-            // Redirect or update UI to show the user is logged in
-            window.location.href = '/dashboard.html';
-        } else {
-            console.error('Login failed:', data.message);
-            alert('Google login failed. Please try again.');
-        }
-
-    } catch (error) {
-        console.error('Error during Google login:', error);
-        alert('An unexpected error occurred. Please try again.');
-    }
-}
